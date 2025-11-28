@@ -6,6 +6,7 @@ import com.study.travly.filter.category.Category;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,6 +32,9 @@ public class Item {
 	private String name;
 
 	@Column(nullable = false)
+	private int order_num;
+
+	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
 	@PrePersist
@@ -39,6 +43,6 @@ public class Item {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "filter_category_id", nullable = false) // DB에서 포린키 컬럼 이름을 지정
+	@JoinColumn(name = "filter_category_id", nullable = false, foreignKey = @ForeignKey(name = "fk_filter_item_filter_category_id"))
 	private Category category;
 }

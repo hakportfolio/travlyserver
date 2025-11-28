@@ -14,12 +14,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "board_place_file")
+@Table(name = "board_place_file", uniqueConstraints = {
+		@UniqueConstraint(name = "UK_board_place_file_board_place_id_file_id", columnNames = { "board_place_id",
+				"file_id" }) })
 @Getter
 @Setter
 @AllArgsConstructor
