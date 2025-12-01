@@ -3,10 +3,11 @@ package com.study.travly.member;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.study.travly.grade.Grade;
+import com.study.travly.badge.Badge;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,8 +51,8 @@ public class Member {
 	private LocalDateTime birthday;
 
 	@ManyToOne
-	@JoinColumn(name = "grade_id", nullable = false)
-	private Grade grade;
+	@JoinColumn(name = "badge_id", nullable = false, foreignKey = @ForeignKey(name = "fk_member_badge_badge_id"))
+	private Badge badge;
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
