@@ -41,7 +41,7 @@ public class BoardFilterItem {
 	private Item filterItem;
 
 	@Column(nullable = false)
-	private int order_num;
+	private int orderNum;
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
@@ -49,6 +49,6 @@ public class BoardFilterItem {
 	@PrePersist
 	public void onCreated() {
 		this.createdAt = LocalDateTime.now();
-		this.order_num = 0;
+		this.orderNum = 0;
 	}
 }

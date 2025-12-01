@@ -1,7 +1,6 @@
 package com.study.travly.member;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import com.study.travly.badge.Badge;
 
@@ -13,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -35,8 +35,9 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private UUID auth_uuid;
+	@OneToOne
+	@JoinColumn(name = "auth_uuid", nullable = false, foreignKey = @ForeignKey(name = "fk_member__auth_uuid"))
+	private AuthUser authUser;
 
 	@Column(nullable = false)
 	private String name;

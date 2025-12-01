@@ -32,7 +32,7 @@ public class Item {
 	private String name;
 
 	@Column(nullable = false)
-	private int order_num;
+	private int orderNum;
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;

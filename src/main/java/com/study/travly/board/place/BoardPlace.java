@@ -1,17 +1,26 @@
 package com.study.travly.board.place;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.study.travly.board.Board;
+import com.study.travly.board.place.file.BoardPlaceFile;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -29,8 +38,9 @@ public class BoardPlace {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne()
-	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_place_board_id"))
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_place__board_id"))
 	private Board board;
 
 	@Column(nullable = false)
@@ -40,9 +50,14 @@ public class BoardPlace {
 	private String content;
 
 	@Column(nullable = false)
-	private int order_num;
+	private int orderNum;
 
+	@Comment("kakaomap api의 장소 id")
 	private String mapPlaceId;
+
+	@Comment("한국관광공사_국문 관광정보 서비스. contentid. https://www.data.go.kr/data/15101578/openapi.do")
+	private String externalId;
+
 	@Column(nullable = false)
 	private double x; // 경도(Longitude)
 
@@ -64,4 +79,7 @@ public class BoardPlace {
 	public void onUpdatedd() {
 		this.updatedAt = LocalDateTime.now();
 	}
+
+	@OneToMany(mappedBy = "boardPlace", cascade = CascadeType.PERSIST)
+	private List<BoardPlaceFile> files;
 }

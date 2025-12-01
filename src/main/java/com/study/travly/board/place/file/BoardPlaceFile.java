@@ -2,16 +2,22 @@ package com.study.travly.board.place.file;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.study.travly.board.place.BoardPlace;
 import com.study.travly.file.File;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -31,16 +37,17 @@ public class BoardPlaceFile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne()
-	@JoinColumn(name = "board_place_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "board_place_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_place_file__board_place_id"))
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private BoardPlace boardPlace;
 
-	@ManyToOne()
-	@JoinColumn(name = "file_id", nullable = false)
+	@OneToOne()
+	@JoinColumn(name = "file_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_place_file__file_id"))
 	private File file;
 
 	@Column(nullable = false)
-	private int order_num; // db keyword 'order' 와 충돌 회피
+	private int orderNum; // db keyword 'order' 와 충돌 회피
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
@@ -48,6 +55,6 @@ public class BoardPlaceFile {
 	@PrePersist
 	public void onCreated() {
 		this.createdAt = LocalDateTime.now();
-		this.order_num = 0;
+		this.orderNum = 0;
 	}
 }

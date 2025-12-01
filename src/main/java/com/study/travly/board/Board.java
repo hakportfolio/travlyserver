@@ -1,9 +1,12 @@
 package com.study.travly.board;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.study.travly.board.place.BoardPlace;
 import com.study.travly.member.Member;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -12,18 +15,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "board")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Board {
@@ -53,4 +59,7 @@ public class Board {
 	public void onUpdatedd() {
 		this.updatedAt = LocalDateTime.now();
 	}
+
+	@OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST)
+	private List<BoardPlace> places;
 }

@@ -39,7 +39,7 @@ public class Category {
 	private boolean multiSelect;
 
 	@Column(nullable = false)
-	private int order_num;
+	private int orderNum;
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
@@ -47,7 +47,7 @@ public class Category {
 	@PrePersist
 	public void onCreated() {
 		this.createdAt = LocalDateTime.now();
-		this.order_num = 0;
+		this.orderNum = 0;
 	}
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)

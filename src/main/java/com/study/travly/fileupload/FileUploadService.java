@@ -28,18 +28,18 @@ public class FileUploadService {
 	@Autowired
 	FileRepository fileRepo;
 
-	public List<File> fileCreate(FileUploadDto req) throws IOException {
-		return fileCreate(req, 100, 100);
+	public List<File> fileCreate(FileUploadDto dto) throws IOException {
+		return fileCreate(dto, 100, 100);
 	}
 
-	public List<File> fileCreate(FileUploadDto req, int thumbSize) throws IOException {
-		return fileCreate(req, thumbSize, thumbSize);
+	public List<File> fileCreate(FileUploadDto dto, int thumbSize) throws IOException {
+		return fileCreate(dto, thumbSize, thumbSize);
 	}
 
 	// ret : new filename list
-	public List<File> fileCreate(FileUploadDto req, int thumbX, int thumbY) throws IOException {
+	public List<File> fileCreate(FileUploadDto dto, int thumbX, int thumbY) throws IOException {
 
-		List<MultipartFile> files = req.getFiles();
+		List<MultipartFile> files = dto.getFiles();
 		if (files != null && !files.isEmpty())
 			log.info("----fileCreate() files.size() : " + files.size());
 
