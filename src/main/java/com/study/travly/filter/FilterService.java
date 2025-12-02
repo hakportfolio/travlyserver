@@ -1,7 +1,8 @@
 package com.study.travly.filter;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ record ItemRequest(String name) {
 //Category와 Item 목록을 담는 메인 요청 DTO
 record FilterRequest(String name, boolean multiSelect, int orderNum,
 		// Category에 종속될 Item 목록
-		List<ItemRequest> items) {
+		Set<ItemRequest> items) {
 }
 
 @Service
@@ -40,7 +41,7 @@ public class FilterService {
 
 		int i = 0;
 		// 2. Item 목록 생성 및 저장
-		List<Item> itemsToSave = new ArrayList<Item>();
+		Set<Item> itemsToSave = new HashSet<Item>();
 		for (ItemRequest itemRequest : request.items()) {
 			Item item = new Item(null, // id는 @GeneratedValue로 자동 생성
 					itemRequest.name(), i++, null, // createdAt은 @PrePersist로 자동 생성
@@ -58,5 +59,9 @@ public class FilterService {
 		// 이 예시에서는 Category 엔티티에 Item 리스트 필드가 없으므로 생략합니다.
 
 		return savedCategory;
+	}
+
+	public List<Category> getAllCategoryItems() {
+		return categoryRepository.getAllCategoryItems();
 	}
 }

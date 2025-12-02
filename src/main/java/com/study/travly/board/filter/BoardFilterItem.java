@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -27,6 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class BoardFilterItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,14 +43,10 @@ public class BoardFilterItem {
 	private Item filterItem;
 
 	@Column(nullable = false)
-	private int orderNum;
-
-	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
 	@PrePersist
 	public void onCreated() {
 		this.createdAt = LocalDateTime.now();
-		this.orderNum = 0;
 	}
 }

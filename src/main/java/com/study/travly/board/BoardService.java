@@ -1,8 +1,8 @@
 package com.study.travly.board;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class BoardService {
 		Board board = Board.builder().title(request.getTitle()).member(member).build();
 		// @PrePersist가 createdAt, updatedAt을 설정합니다.
 
-		List<BoardPlace> boardPlaces = new ArrayList<>();
+		Set<BoardPlace> boardPlaces = new HashSet<>();
 		int placeOrder = 0; // BoardPlace 순번 카운터
 
 		if (request.getPlaces() != null) {
@@ -62,7 +62,7 @@ public class BoardService {
 		// BoardPlaceFile 객체 생성
 		BoardPlaceFile boardPlaceFile = new BoardPlaceFile(null, // id
 				boardPlace, // boardPlace (참조 설정)
-				file, orderNum++, // DTO에서 받은 orderNum 사용 (PrePersist에서 0으로 설정되는 문제 해결 필요)
+				file, orderNum, // DTO에서 받은 orderNum 사용 (PrePersist에서 0으로 설정되는 문제 해결 필요)
 				null // createdAt
 		);
 
@@ -79,7 +79,7 @@ public class BoardService {
 		);
 
 		// 4. BoardPlaceFile 리스트 처리 (내부 For 루프)
-		List<BoardPlaceFile> boardPlaceFiles = new ArrayList<>();
+		Set<BoardPlaceFile> boardPlaceFiles = new HashSet<>();
 		int orderNum = 0;
 		if (placeDto.getFiles() != null) {
 			for (BoardPlaceFileDto fileDto : placeDto.getFiles()) {
@@ -95,4 +95,5 @@ public class BoardService {
 
 		return boardRepository.findByIdWithPlaces(id);
 	}
+
 }

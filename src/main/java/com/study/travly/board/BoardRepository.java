@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
-	@Query("SELECT b FROM Board b JOIN FETCH b.places p WHERE b.id = :boardId")
+	@Query("SELECT DISTINCT b FROM Board b JOIN FETCH b.places p JOIN FETCH b.member m JOIN FETCH p.files f WHERE b.id = :boardId")
 	Optional<Board> findByIdWithPlaces(@Param("boardId") Long boardId);
 }

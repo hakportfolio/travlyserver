@@ -1,12 +1,14 @@
 package com.study.travly.board.place;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.travly.board.Board;
 import com.study.travly.board.place.file.BoardPlaceFile;
 
@@ -21,11 +23,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -33,11 +38,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(of = { "orderNum", "id" })
 public class BoardPlace {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonIgnore // 양방향 관계 중 역방향(Many-to-One) 관계에 @JsonIgnore를 사용하여 해당 필드를 JSON 직렬화에서 제외
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_place__board_id"))
@@ -80,6 +88,8 @@ public class BoardPlace {
 		this.updatedAt = LocalDateTime.now();
 	}
 
+	@BatchSize(size = 5)
 	@OneToMany(mappedBy = "boardPlace", cascade = CascadeType.PERSIST)
-	private List<BoardPlaceFile> files;
+	@OrderBy("orderNum ASC")
+	private Set<BoardPlaceFile> files;
 }

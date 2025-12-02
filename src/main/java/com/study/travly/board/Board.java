@@ -1,7 +1,9 @@
 package com.study.travly.board;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
+
+import org.hibernate.annotations.BatchSize;
 
 import com.study.travly.board.place.BoardPlace;
 import com.study.travly.member.Member;
@@ -16,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -60,6 +63,8 @@ public class Board {
 		this.updatedAt = LocalDateTime.now();
 	}
 
+	@BatchSize(size = 10) // 갯수 제한
 	@OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST)
-	private List<BoardPlace> places;
+	@OrderBy("orderNum ASC")
+	private Set<BoardPlace> places;
 }
