@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.study.travly.board.BoardSaveRequest.BoardPlaceDto;
 import com.study.travly.board.BoardSaveRequest.BoardPlaceFileDto;
+import com.study.travly.board.filter.BoardFilterService;
 import com.study.travly.board.place.BoardPlace;
 import com.study.travly.board.place.file.BoardPlaceFile;
 import com.study.travly.file.File;
@@ -19,6 +20,9 @@ import com.study.travly.member.MemberRepository;
 
 @Service
 public class BoardService {
+	@Autowired
+	private BoardFilterService boardFilterService;
+
 	@Autowired
 	private BoardRepository boardRepository;
 	@Autowired
@@ -31,11 +35,11 @@ public class BoardService {
 	 */
 	@Transactional
 	public Optional<Board> saveBoardWithAllDetails(BoardSaveRequest request) {
-		// 1. Member 엔티티 조회 (FK 제약조건 만족을 위해 필요)
+		// Member 엔티티 조회 (FK 제약조건 만족을 위해 필요)
 		Member member = memberRepository.findById(request.getMemberId())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 ID입니다."));
 
-		// 2. Board 엔티티 생성 및 관계 설정
+		// Board 엔티티 생성 및 관계 설정
 		Board board = Board.builder().title(request.getTitle()).member(member).build();
 		// @PrePersist가 createdAt, updatedAt을 설정합니다.
 
@@ -49,9 +53,12 @@ public class BoardService {
 		}
 
 		board.setPlaces(boardPlaces);
-		// 5. Board 저장
+		Board newBoard = boardRepository.save(board);
+
+		// filter 저장 @Transactional로 인해 saveBoardFilterItems()로 Transaction 으로 처리.
+		boardFilterService.saveBoardFilterItems(newBoard.getId(), request.getFilterItemIds());
 		// CascadeType.PERSIST 설정 덕분에 BoardPlace와 BoardPlaceFile도 함께 DB에 저장됩니다.
-		return Optional.of(boardRepository.save(board));
+		return Optional.of(newBoard);
 	}
 
 	private BoardPlaceFile BoardPlaceFileDto2BoardPlaceFile(BoardPlaceFileDto fileDto, BoardPlace boardPlace,
@@ -74,7 +81,7 @@ public class BoardService {
 				board, // board (참조 설정)
 				placeDto.getTitle(), placeDto.getContent(), placeOrder, // 순번 증가 (문제 없음)
 				placeDto.getMapPlaceId(), placeDto.getExternalId(), placeDto.getX(), placeDto.getY(), null, null, // createdAt,
-																													// updatedAt
+				// updatedAt
 				null // files (BoardPlaceFile 리스트)
 		);
 

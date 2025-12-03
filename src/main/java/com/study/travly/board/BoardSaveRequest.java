@@ -12,6 +12,8 @@ public class BoardSaveRequest {
 	private String title;
 	private Long memberId; // Member 객체 대신 ID를 받음
 
+	private List<Long> filterItemIds;
+
 	// BoardPlace List fields (BoardPlace를 위한 DTO)
 	private List<BoardPlaceDto> places;
 

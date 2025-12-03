@@ -24,6 +24,10 @@ public class BoardFilterService {
 	@Autowired
 	private ItemRepository itemRepository;
 
+	public void saveBoardFilterItems(Long boarId, List<Long> filterItemIds) {
+		saveBoardFilterItems(new BoardFilterItemsSaveRequest(boarId, filterItemIds));
+	}
+
 	/**
 	 * BoardItemsSaveRequest를 사용하여 게시글과 필터 아이템 관계를 저장/갱신합니다.
 	 * 
