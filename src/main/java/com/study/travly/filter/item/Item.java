@@ -28,7 +28,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "orderNum", "id" })
 public class Item {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
@@ -47,6 +47,6 @@ public class Item {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "filter_category_id", nullable = false, foreignKey = @ForeignKey(name = "fk_filter_item_filter_category_id"))
+	@JoinColumn(name = "filter_category_id", nullable = false, foreignKey = @ForeignKey(name = "fk_filter_item__filter_category_id"))
 	private Category category;
 }

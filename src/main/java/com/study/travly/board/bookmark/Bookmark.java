@@ -22,7 +22,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "bookmark", uniqueConstraints = {
-		@UniqueConstraint(name = "UK_bookmark_member_board", columnNames = { "member_id", "board_id" }) })
+		@UniqueConstraint(name = "UK_bookmark__member_board", columnNames = { "member_id", "board_id" }) })
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,11 +32,11 @@ public class Bookmark {
 	private Long id;
 
 	@ManyToOne()
-	@JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(name = "fk_bookmark_member_id"))
+	@JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(name = "fk_bookmark__member_id"))
 	private Member member;
 
 	@ManyToOne()
-	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_bookmark_board_id"))
+	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_bookmark__board_id"))
 	private Board board;
 
 	@Column(nullable = false)

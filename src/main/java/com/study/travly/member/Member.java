@@ -3,6 +3,7 @@ package com.study.travly.member;
 import java.time.LocalDateTime;
 
 import com.study.travly.badge.Badge;
+import com.study.travly.file.File;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,7 +44,7 @@ public class Member {
 	private String name;
 
 	@Column(nullable = false)
-	private String alias;
+	private String nickname;
 
 	@Column(nullable = false)
 	private int gender; // 1 : man, 2 : woman
@@ -52,8 +53,13 @@ public class Member {
 	private LocalDateTime birthday;
 
 	@ManyToOne
-	@JoinColumn(name = "badge_id", nullable = false, foreignKey = @ForeignKey(name = "fk_member_badge_badge_id"))
+	@JoinColumn(name = "badge_id", nullable = false, foreignKey = @ForeignKey(name = "fk_member__badge_badge_id"))
 	private Badge badge;
+
+	// @OneToOne이면 디폴트로 사용 할 file_id를 공유 수 없다.
+	@ManyToOne
+	@JoinColumn(name = "file_id", nullable = false, unique = false, foreignKey = @ForeignKey(name = "fk_member__file_id"))
+	private File file;
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
@@ -64,8 +70,6 @@ public class Member {
 	public void onCreated() {
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = this.createdAt;
-		this.gender = 1;
-		this.introduction = "";
 	}
 
 	@PreUpdate

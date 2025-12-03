@@ -44,7 +44,7 @@ public class Board {
 	private String title;
 
 	@ManyToOne
-	@JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_member_member_id"))
+	@JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board__member_member_id"))
 	private Member member;
 
 	@Column(nullable = false)

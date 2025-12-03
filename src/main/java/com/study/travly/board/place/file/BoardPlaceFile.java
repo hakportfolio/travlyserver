@@ -48,6 +48,7 @@ public class BoardPlaceFile {
 	private BoardPlace boardPlace;
 
 	// @OneToOne() 을 사용하면 file_id field에 unique index를 생성 해서 file_id을 중복 사용 할 수 없다.
+	// product 에서는 @OneToOne()을 사용 하는 것이 바람직
 	@ManyToOne
 	@JoinColumn(name = "file_id", nullable = false, unique = false, foreignKey = @ForeignKey(name = "fk_board_place_file__file_id"))
 	private File file;

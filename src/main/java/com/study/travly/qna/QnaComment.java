@@ -6,6 +6,7 @@ import com.study.travly.member.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,11 +35,11 @@ public class QnaComment {
 	private String comment;
 
 	@ManyToOne
-	@JoinColumn(name = "qna_board_id", nullable = false)
+	@JoinColumn(name = "qna_board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_qna_comment__qna_board_id"))
 	private QnaBoard qnaBoard;
 
 	@ManyToOne
-	@JoinColumn(name = "member_id", nullable = false)
+	@JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(name = "fk_qna_comment__member_id"))
 	private Member member;
 
 	@Column(nullable = false)

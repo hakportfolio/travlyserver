@@ -35,11 +35,11 @@ public class BoardFilterItem {
 	private Long id;
 
 	@ManyToOne()
-	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_filter_item_board_id"))
+	@JoinColumn(name = "board_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_filter_item__board_id"))
 	private Board board;
 
 	@ManyToOne()
-	@JoinColumn(name = "filter_item_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_filter_item_filter_item_id"))
+	@JoinColumn(name = "filter_item_id", nullable = false, foreignKey = @ForeignKey(name = "fk_board_filter_item__filter_item_id"))
 	private Item filterItem;
 
 	@Column(nullable = false)
